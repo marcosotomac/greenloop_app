@@ -1,0 +1,1971 @@
+/* ChatWindow - Diseño Completamente Modernizado */
+
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-50)) 100%
+  );
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid hsl(var(--default-200));
+  overflow: hidden;
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  /* Optimizaciones de rendering */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: auto;
+
+  /* Desactivar animaciones costosas en hover */
+  pointer-events: auto;
+
+  /* Optimizar compositing */
+  contain: layout style paint;
+  content-visibility: auto;
+}
+
+.dark .chat-window {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-900)) 100%
+  );
+  border-color: hsl(var(--default-700));
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.chat-window::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      hsl(var(--primary-100) / 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      hsl(var(--primary-200) / 0.08) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header del chat modernizado */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-600)) 0%,
+    hsl(var(--primary-700)) 100%
+  );
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 10;
+  border-bottom: 1px solid hsl(var(--primary-500));
+}
+
+.dark .chat-header {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-700)) 0%,
+    hsl(var(--primary-800)) 100%
+  );
+  border-bottom-color: hsl(var(--primary-600));
+}
+
+.chat-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--primary-400)) 50%,
+    transparent 100%
+  );
+}
+
+.chat-header-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 2;
+  position: relative;
+}
+
+.chat-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-200)) 0%,
+    hsl(var(--primary-300)) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--primary-800));
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  border: 3px solid hsl(var(--primary-foreground) / 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.chat-user-name {
+  font-weight: 700;
+  color: hsl(var(--primary-foreground));
+  font-size: 20px;
+  line-height: 1.3;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.chat-product-name {
+  color: hsl(var(--primary-200));
+  font-size: 14px;
+  line-height: 1.4;
+  opacity: 0.9;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-product-name::before {
+  content: "📦";
+  font-size: 12px;
+}
+
+.chat-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 2;
+  position: relative;
+}
+
+.chat-header-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  color: hsl(var(--primary-foreground));
+
+  /* Optimizar botones para evitar lag en hover */
+  contain: layout style;
+  transform: translateZ(0);
+}
+
+.chat-header-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  /* Desactivar hover effects costosos */
+  animation: none !important;
+  transition: opacity 0.1s ease !important;
+}
+
+/* Área de mensajes */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 20px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-50)) 100%
+  );
+  background-image:
+    radial-gradient(
+      circle at 25px 25px,
+      hsl(var(--primary-500) / 0.05) 2px,
+      transparent 0
+    ),
+    radial-gradient(
+      circle at 75px 75px,
+      hsl(var(--primary-500) / 0.03) 1px,
+      transparent 0
+    );
+  background-size:
+    100px 100px,
+    50px 50px;
+}
+
+.dark .chat-messages {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-900)) 100%
+  );
+  background-image:
+    radial-gradient(
+      circle at 25px 25px,
+      hsl(var(--primary-600) / 0.05) 2px,
+      transparent 0
+    ),
+    radial-gradient(
+      circle at 75px 75px,
+      hsl(var(--primary-600) / 0.03) 1px,
+      transparent 0
+    );
+}
+
+/* Optimización para scroll automático fluido */
+.chat-messages {
+  /* Scroll instantáneo pero suave visualmente */
+  scroll-behavior: auto !important;
+  scroll-padding-bottom: 16px;
+
+  /* Optimizar el rendering del scroll */
+  overflow-anchor: auto;
+  overscroll-behavior: contain;
+
+  /* Prevenir saltos visuales durante el scroll automático */
+  contain: layout style;
+}
+
+/* Elemento de referencia para el scroll optimizado */
+.chat-messages-end {
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+  border-radius: 999px;
+}
+
+.dark .chat-messages::-webkit-scrollbar-track {
+  background-color: #374151;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: #10b981;
+  border-radius: 999px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background-color: #059669;
+}
+
+.dark .chat-messages::-webkit-scrollbar-thumb {
+  background-color: #059669;
+}
+
+/* Mensajes */
+.message {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  max-width: 75%;
+  margin-bottom: 16px;
+  clear: both;
+  position: relative;
+  animation: slideInMessage 0.3s ease-out;
+
+  /* Optimizar mensajes */
+  contain: layout;
+  will-change: auto;
+}
+
+/* Mensajes del otro usuario - a la izquierda */
+.message:not(.own) {
+  justify-content: flex-start;
+  align-self: flex-start;
+  margin-right: auto;
+  margin-left: 0;
+  flex-direction: row;
+}
+
+/* Mis mensajes - a la derecha */
+.message.own {
+  justify-content: flex-end;
+  align-self: flex-end;
+  margin-left: auto;
+  margin-right: 0;
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--primary-foreground));
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+  border: 3px solid hsl(var(--background));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 2;
+}
+
+/* Avatar para mensajes del otro usuario */
+.message:not(.own) .message-avatar {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--default-600)) 0%,
+    hsl(var(--default-700)) 100%
+  );
+  order: 1;
+}
+
+/* Avatar para mis mensajes */
+.message.own .message-avatar {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-600)) 0%,
+    hsl(var(--primary-700)) 100%
+  );
+  order: 2;
+}
+
+.dark .message-avatar {
+  border-color: hsl(var(--default-800));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.message-bubble {
+  position: relative;
+  padding: 16px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+  word-wrap: break-word;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+/* Burbujas de mensajes del otro usuario */
+.message-bubble.other {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-50)) 100%
+  );
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--default-200));
+  border-radius: 20px 20px 20px 4px;
+  margin-left: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dark .message-bubble.other {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--default-700)) 0%,
+    hsl(var(--default-800)) 100%
+  );
+  color: hsl(var(--default-100));
+  border-color: hsl(var(--default-600));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Burbujas de mis mensajes */
+.message-bubble.own {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-600)) 0%,
+    hsl(var(--primary-700)) 100%
+  );
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 6px 20px hsl(var(--primary-600) / 0.3);
+  border-radius: 20px 20px 4px 20px;
+  margin-right: 12px;
+  border: 1px solid hsl(var(--primary-500));
+}
+
+.dark .message-bubble.own {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-700)) 0%,
+    hsl(var(--primary-800)) 100%
+  );
+  box-shadow: 0 6px 20px hsl(var(--primary-700) / 0.4);
+  border-color: hsl(var(--primary-600));
+}
+
+/* Colas de las burbujas */
+.message-bubble.other::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: 6px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 12px 12px 0;
+  border-color: transparent hsl(var(--background)) transparent transparent;
+  filter: drop-shadow(-1px 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.dark .message-bubble.other::before {
+  border-color: transparent hsl(var(--default-700)) transparent transparent;
+}
+
+.message-bubble.own::before {
+  content: "";
+  position: absolute;
+  right: -6px;
+  bottom: 6px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 12px 12px;
+  border-color: transparent transparent hsl(var(--primary-600)) transparent;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.15));
+}
+
+.dark .message-bubble.own::before {
+  border-color: transparent transparent hsl(var(--primary-700)) transparent;
+}
+
+.message-content {
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 400;
+  word-break: break-word;
+}
+
+.message-time {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-top: 8px;
+  font-weight: 500;
+  display: block;
+}
+
+/* Timestamp para mensajes del otro usuario */
+.message-bubble.other .message-time {
+  color: hsl(var(--default-500));
+  text-align: left;
+}
+
+.dark .message-bubble.other .message-time {
+  color: hsl(var(--default-400));
+}
+
+/* Timestamp para mis mensajes */
+.message-bubble.own .message-time {
+  color: hsl(var(--primary-100));
+  text-align: right;
+}
+
+/* Efectos hover mejorados */
+.message-bubble:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.message-bubble.own:hover {
+  box-shadow: 0 8px 25px hsl(var(--primary-600) / 0.4);
+}
+
+.dark .message-bubble:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dark .message-bubble.own:hover {
+  box-shadow: 0 8px 25px hsl(var(--primary-700) / 0.5);
+}
+
+/* Agrupación de mensajes consecutivos mejorada */
+.message + .message.own {
+  margin-top: -4px;
+}
+
+.message + .message:not(.own) {
+  margin-top: -4px;
+}
+
+/* Primer mensaje del grupo */
+.message:first-child,
+.message:not(.own) + .message.own,
+.message.own + .message:not(.own) {
+  margin-top: 20px;
+}
+
+/* Indicador de escritura */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-50)) 100%
+  );
+  border-radius: 20px 20px 20px 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid hsl(var(--default-200));
+  max-width: 140px;
+  margin-bottom: 16px;
+  margin-left: 52px; /* Alineado con los mensajes del otro usuario */
+  position: relative;
+  animation: slideInFromBottom 0.3s ease;
+}
+
+.dark .typing-indicator {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--default-700)) 0%,
+    hsl(var(--default-800)) 100%
+  );
+  border-color: hsl(var(--default-600));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Cola del indicador de escritura */
+.typing-indicator::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: 6px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 12px 12px 0;
+  border-color: transparent hsl(var(--background)) transparent transparent;
+  filter: drop-shadow(-1px 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.dark .typing-indicator::before {
+  border-color: transparent hsl(var(--default-700)) transparent transparent;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-600)) 0%,
+    hsl(var(--primary-700)) 100%
+  );
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  30% {
+    transform: translateY(-10px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Input del chat */
+.chat-input-container {
+  padding: 20px 24px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-50)) 100%
+  );
+  border-top: 1px solid hsl(var(--default-200));
+  position: relative;
+  z-index: 10;
+}
+
+.dark .chat-input-container {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-900)) 100%
+  );
+  border-top-color: hsl(var(--default-700));
+}
+
+.chat-input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--default-50)) 0%,
+    hsl(var(--background)) 100%
+  );
+  border-radius: 20px;
+  padding: 16px 20px;
+  border: 2px solid hsl(var(--default-200));
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.dark .chat-input-wrapper {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--default-800)) 0%,
+    hsl(var(--default-900)) 100%
+  );
+  border-color: hsl(var(--default-600));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.chat-input-wrapper:focus-within {
+  border-color: hsl(var(--primary-500));
+  box-shadow: 0 4px 20px hsl(var(--primary-500) / 0.2);
+  transform: translateY(-2px);
+}
+
+.dark .chat-input-wrapper:focus-within {
+  box-shadow: 0 4px 20px hsl(var(--primary-600) / 0.3);
+}
+
+.chat-input {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: hsl(var(--foreground));
+  font-size: 15px;
+  resize: none;
+  max-height: 120px;
+  min-height: 24px;
+  line-height: 1.5;
+  font-family: inherit;
+}
+
+.dark .chat-input {
+  color: hsl(var(--default-100));
+}
+
+.chat-input::placeholder {
+  color: hsl(var(--default-500));
+  font-weight: 400;
+}
+
+.dark .chat-input::placeholder {
+  color: hsl(var(--default-400));
+}
+
+.chat-input::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-input::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.chat-input::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--primary-500)) 0%,
+    hsl(var(--primary-600)) 100%
+  );
+  border-radius: 4px;
+}
+
+.dark .chat-input::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--primary-600)) 0%,
+    hsl(var(--primary-700)) 100%
+  );
+}
+
+.chat-send-btn {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-600)) 0%,
+    hsl(var(--primary-700)) 100%
+  );
+  color: hsl(var(--primary-foreground));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px hsl(var(--primary-600) / 0.3);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  /* Optimizar botones para evitar lag en hover */
+  contain: layout style;
+  transform: translateZ(0);
+}
+
+.chat-send-btn:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-700)) 0%,
+    hsl(var(--primary-800)) 100%
+  );
+  box-shadow: 0 6px 16px hsl(var(--primary-600) / 0.4);
+  transform: translateY(-2px);
+}
+
+.chat-send-btn:active:not(:disabled) {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
+}
+
+.chat-send-btn:disabled {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--default-400)) 0%,
+    hsl(var(--default-500)) 100%
+  );
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.dark .chat-send-btn:disabled {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--default-600)) 0%,
+    hsl(var(--default-700)) 100%
+  );
+}
+
+.chat-send-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px hsl(var(--primary-500) / 0.3);
+}
+
+/* =================================================
+   OPTIMIZACIONES CRÍTICAS PARA ELIMINAR LAG DEL CURSOR
+   ================================================= */
+
+/* Desactivar animaciones costosas globalmente */
+.chat-window,
+.chat-window *,
+.chat-window *::before,
+.chat-window *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
+/* Optimizaciones de rendering para eliminar lag */
+.chat-window {
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
+  will-change: auto !important;
+  contain: layout style paint size !important;
+}
+
+/* Optimizar todos los elementos internos */
+.chat-window * {
+  contain: layout !important;
+  will-change: auto !important;
+}
+
+/* Optimizaciones específicas para mensajes */
+.message {
+  contain: layout style !important;
+  transform: translateZ(0) !important;
+}
+
+/* Optimizaciones para botones */
+.chat-header-btn,
+.chat-send-btn {
+  contain: layout style !important;
+  transform: translateZ(0) !important;
+}
+
+/* Desactivar hover effects completamente */
+.chat-window *:hover {
+  transition: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Optimizar el textarea */
+.chat-input {
+  contain: layout style !important;
+  will-change: contents !important;
+}
+
+/* Optimizar el área de mensajes */
+.chat-messages {
+  contain: layout style !important;
+  content-visibility: auto !important;
+}
+
+/* Forzar aceleración por hardware en elementos críticos */
+.chat-window,
+.chat-messages,
+.message {
+  -webkit-transform: translateZ(0) !important;
+  -moz-transform: translateZ(0) !important;
+  -ms-transform: translateZ(0) !important;
+  -o-transform: translateZ(0) !important;
+  transform: translateZ(0) !important;
+}
+
+/* Optimizar renderizado de texto */
+.message-content,
+.chat-input {
+  text-rendering: optimizeSpeed !important;
+  -webkit-font-smoothing: subpixel-antialiased !important;
+}
+
+/* Reducir repaints en el scroll */
+.chat-messages {
+  scroll-behavior: auto !important;
+}
+
+/* Performance crítica: eliminar todas las sombras y efectos costosos */
+.chat-window,
+.chat-window * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Modo de performance extrema */
+@media (prefers-reduced-motion: reduce) {
+  .chat-window,
+  .chat-window * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* States */
+.chat-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: hsl(var(--default-500));
+  gap: 16px;
+  flex: 1;
+}
+
+.dark .chat-loading {
+  color: hsl(var(--default-400));
+}
+
+.chat-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: hsl(var(--danger));
+  background: linear-gradient(
+    135deg,
+    hsl(var(--danger) / 0.05) 0%,
+    hsl(var(--danger) / 0.1) 100%
+  );
+  border-radius: 16px;
+  margin: 20px;
+  border: 1px solid hsl(var(--danger) / 0.2);
+  gap: 16px;
+}
+
+.dark .chat-error {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--danger) / 0.1) 0%,
+    hsl(var(--danger) / 0.15) 100%
+  );
+  border-color: hsl(var(--danger) / 0.3);
+}
+
+.chat-error button {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-600)) 0%,
+    hsl(var(--primary-700)) 100%
+  );
+  color: hsl(var(--primary-foreground));
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.chat-error button:hover {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-700)) 0%,
+    hsl(var(--primary-800)) 100%
+  );
+  transform: translateY(-1px);
+}
+
+.chat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 60px 40px;
+  color: hsl(var(--default-500));
+  text-align: center;
+  gap: 16px;
+}
+
+.dark .chat-empty {
+  color: hsl(var(--default-400));
+}
+
+.chat-empty p:first-of-type {
+  font-size: 18px;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.dark .chat-empty p:first-of-type {
+  color: hsl(var(--default-100));
+}
+
+.chat-empty p:last-of-type {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.chat-empty-icon {
+  width: 80px;
+  height: 80px;
+  color: hsl(var(--default-300));
+  margin-bottom: 8px;
+}
+
+.dark .chat-empty-icon {
+  color: hsl(var(--default-600));
+}
+
+/* Spinner */
+.spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  border: 3px solid hsl(var(--default-200));
+  border-top-color: hsl(var(--primary-600));
+}
+
+.dark .spinner {
+  border-color: hsl(var(--default-700));
+  border-top-color: hsl(var(--primary-500));
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Nueva animación para mensajes */
+@keyframes slideInMessage {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =================================================
+   ANIMACIONES PARA ENVÍO DE MENSAJES OPTIMIZADAS
+   ================================================= */
+
+/* Animación de mensaje enviándose */
+.message-sending-indicator {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 16px;
+  opacity: 0.7;
+  animation: indicatorPulse 0.6s ease-out;
+}
+
+@keyframes indicatorPulse {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.sending-animation {
+  background: hsl(var(--primary-500));
+  border-radius: 18px;
+  padding: 12px 16px;
+  max-width: 200px;
+  animation: messageSending 0.3s ease-out;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.dark .sending-animation {
+  background: rgba(96, 165, 250, 0.15);
+  border-color: rgba(96, 165, 250, 0.3);
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
+}
+
+/* Animación de entrada del mensaje */
+@keyframes messageSending {
+  0% {
+    transform: translateY(20px) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.7;
+  }
+}
+
+/* Animación de los puntos de envío */
+@keyframes sendingPulse {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Animación de entrada para mensajes nuevos */
+.message {
+  animation: messageSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes messageSlideIn {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Optimización para mensajes temporales */
+.message[data-temp="true"] {
+  opacity: 0.8;
+  animation: messageTempSlideIn 0.2s ease-out;
+}
+
+@keyframes messageTempSlideIn {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+}
+
+/* Animación mejorada del botón de envío */
+.chat-send-btn {
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.chat-send-btn:hover {
+  transform: scale(1.05) !important;
+}
+
+.chat-send-btn:active {
+  transform: scale(0.95) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* Animación del input cuando se envía */
+.chat-input.sending {
+  animation: inputSendPulse 0.3s ease;
+}
+
+@keyframes inputSendPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Performance: Solo animar cuando sea necesario */
+.chat-window.sending-message .message {
+  will-change: transform, opacity;
+}
+
+.chat-window:not(.sending-message) .message {
+  will-change: auto;
+}
+
+/* Dark mode mejorado */
+.dark .chat-window {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+.dark .chat-header {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-700)) 0%,
+    hsl(var(--primary-800)) 100%
+  );
+  border-bottom-color: hsl(var(--primary-600));
+}
+
+.dark .chat-messages {
+  background-image: radial-gradient(
+    circle at 20px 20px,
+    hsl(var(--primary-800) / 0.05) 1px,
+    transparent 1px
+  );
+}
+
+/* Estados hover mejorados para botones */
+.chat-header-btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.message-bubble:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+/* Mejoras de accesibilidad */
+.chat-input:focus {
+  outline: none;
+}
+
+.chat-send-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px hsl(var(--primary-500) / 0.3);
+}
+
+/* Utilidades adicionales */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Transiciones suaves globales */
+* {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Error Boundary Styles */
+.chat-error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 40px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-50)) 100%
+  );
+}
+
+.dark .chat-error-boundary {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-900)) 100%
+  );
+}
+
+.chat-error-content {
+  text-align: center;
+  max-width: 400px;
+  padding: 40px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--danger) / 0.05) 0%,
+    hsl(var(--danger) / 0.1) 100%
+  );
+  border-radius: 16px;
+  border: 1px solid hsl(var(--danger) / 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.dark .chat-error-content {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--danger) / 0.1) 0%,
+    hsl(var(--danger) / 0.15) 100%
+  );
+  border-color: hsl(var(--danger) / 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.chat-error-content .error-icon {
+  color: hsl(var(--danger));
+  margin-bottom: 16px;
+}
+
+.chat-error-content h3 {
+  color: hsl(var(--foreground));
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+.dark .chat-error-content h3 {
+  color: hsl(var(--default-100));
+}
+
+.chat-error-content p {
+  color: hsl(var(--default-600));
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.dark .chat-error-content p {
+  color: hsl(var(--default-400));
+}
+
+.chat-error-content .reload-button {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-600)) 0%,
+    hsl(var(--primary-700)) 100%
+  );
+  color: hsl(var(--primary-foreground));
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px hsl(var(--primary-600) / 0.3);
+}
+
+.chat-error-content .reload-button:hover {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-700)) 0%,
+    hsl(var(--primary-800)) 100%
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px hsl(var(--primary-600) / 0.4);
+}
+
+.chat-error-content .reload-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px hsl(var(--primary-500) / 0.3);
+}
+
+/* =================================================
+   ANIMACIONES MEJORADAS PARA ENVÍO SIN RECARGA
+   ================================================= */
+
+/* Animación de onda al enviar mensaje para disimular la recarga */
+.chat-window.sending-message {
+  position: relative;
+}
+
+.chat-window.sending-message::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.05) 50%,
+    transparent 100%
+  );
+  animation: sendingWave 0.8s ease-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dark .chat-window.sending-message::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(96, 165, 250, 0.08) 50%,
+    transparent 100%
+  );
+}
+
+@keyframes sendingWave {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Animación para mensajes temporales con efecto shimmer */
+.message[data-temp="true"] {
+  animation: messageSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.message[data-temp="true"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.1) 50%,
+    transparent 100%
+  );
+  animation: messageShimmer 1.5s infinite;
+}
+
+.dark .message[data-temp="true"]::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(96, 165, 250, 0.15) 50%,
+    transparent 100%
+  );
+}
+
+@keyframes messageSlideIn {
+  0% {
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes messageShimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Transición suave para mensajes reales que reemplazan temporales */
+.message:not([data-temp="true"]) {
+  animation: messageFadeIn 0.3s ease-out;
+}
+
+@keyframes messageFadeIn {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mejorar indicador de envío con efecto más pulido */
+.message-sending-indicator {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 16px;
+  opacity: 0.7;
+  animation: indicatorPulse 0.6s ease-out;
+}
+
+@keyframes indicatorPulse {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.sending-animation {
+  background: hsl(var(--primary-500));
+  border-radius: 18px;
+  padding: 12px 16px;
+  max-width: 200px;
+  animation: messageSending 0.3s ease-out;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.dark .sending-animation {
+  background: rgba(96, 165, 250, 0.15);
+  border-color: rgba(96, 165, 250, 0.3);
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
+}
+
+/* Animación de entrada del mensaje */
+@keyframes messageSending {
+  0% {
+    transform: translateY(20px) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.7;
+  }
+}
+
+/* Animación de los puntos de envío */
+@keyframes sendingPulse {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Animación de entrada para mensajes nuevos */
+.message {
+  animation: messageSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes messageSlideIn {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Optimización para mensajes temporales */
+.message[data-temp="true"] {
+  opacity: 0.8;
+  animation: messageTempSlideIn 0.2s ease-out;
+}
+
+@keyframes messageTempSlideIn {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+}
+
+/* Animación mejorada del botón de envío */
+.chat-send-btn {
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.chat-send-btn:hover {
+  transform: scale(1.05) !important;
+}
+
+.chat-send-btn:active {
+  transform: scale(0.95) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* Animación del input cuando se envía */
+.chat-input.sending {
+  animation: inputSendPulse 0.3s ease;
+}
+
+@keyframes inputSendPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Performance: Solo animar cuando sea necesario */
+.chat-window.sending-message .message {
+  will-change: transform, opacity;
+}
+
+.chat-window:not(.sending-message) .message {
+  will-change: auto;
+}
+
+/* Dark mode mejorado */
+.dark .chat-window {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+.dark .chat-header {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-700)) 0%,
+    hsl(var(--primary-800)) 100%
+  );
+  border-bottom-color: hsl(var(--primary-600));
+}
+
+.dark .chat-messages {
+  background-image: radial-gradient(
+    circle at 20px 20px,
+    hsl(var(--primary-800) / 0.05) 1px,
+    transparent 1px
+  );
+}
+
+/* Estados hover mejorados para botones */
+.chat-header-btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.message-bubble:hover {
+  transform: translateY(-1px);
+  transition: transform 0.2s ease;
+}
+
+/* Mejoras de accesibilidad */
+.chat-input:focus {
+  outline: none;
+}
+
+.chat-send-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px hsl(var(--primary-500) / 0.3);
+}
+
+/* Utilidades adicionales */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Transiciones suaves globales */
+* {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* Error Boundary Styles */
+.chat-error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 40px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-50)) 100%
+  );
+}
+
+.dark .chat-error-boundary {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--background)) 0%,
+    hsl(var(--default-900)) 100%
+  );
+}
+
+.chat-error-content {
+  text-align: center;
+  max-width: 400px;
+  padding: 40px;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--danger) / 0.05) 0%,
+    hsl(var(--danger) / 0.1) 100%
+  );
+  border-radius: 16px;
+  border: 1px solid hsl(var(--danger) / 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.dark .chat-error-content {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--danger) / 0.1) 0%,
+    hsl(var(--danger) / 0.15) 100%
+  );
+  border-color: hsl(var(--danger) / 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.chat-error-content .error-icon {
+  color: hsl(var(--danger));
+  margin-bottom: 16px;
+}
+
+.chat-error-content h3 {
+  color: hsl(var(--foreground));
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+.dark .chat-error-content h3 {
+  color: hsl(var(--default-100));
+}
+
+.chat-error-content p {
+  color: hsl(var(--default-600));
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 24px 0;
+}
+
+.dark .chat-error-content p {
+  color: hsl(var(--default-400));
+}
+
+.chat-error-content .reload-button {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-600)) 0%,
+    hsl(var(--primary-700)) 100%
+  );
+  color: hsl(var(--primary-foreground));
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px hsl(var(--primary-600) / 0.3);
+}
+
+.chat-error-content .reload-button:hover {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary-700)) 0%,
+    hsl(var(--primary-800)) 100%
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px hsl(var(--primary-600) / 0.4);
+}
+
+.chat-error-content .reload-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px hsl(var(--primary-500) / 0.3);
+}
+
+/* =================================================
+   OPTIMIZACIONES EXTREMAS DE VELOCIDAD - OVERRIDE TODAS LAS ANIMACIONES
+   ================================================= */
+
+/* Desactivar TODAS las animaciones para máximo rendimiento */
+.chat-window * {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+/* Mensaje temporal simple - sin animaciones */
+.message[data-temp="true"] {
+  opacity: 0.8 !important;
+  animation: none !important;
+  position: static !important;
+  overflow: visible !important;
+}
+
+.message[data-temp="true"]::after {
+  display: none !important;
+}
+
+/* Indicador de envío ultra-simple */
+.message-sending-indicator {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 16px;
+  opacity: 0.7;
+  animation: none !important;
+}
+
+.sending-animation {
+  background: hsl(var(--primary-500));
+  border-radius: 12px;
+  padding: 6px 12px;
+  color: white;
+  font-size: 0.8rem;
+  max-width: 100px;
+  animation: none !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Estado "Enviando..." ultra-simple */
+.sending-status {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  margin-left: 4px;
+}
+
+.sending-dots,
+.sending-dot-text {
+  display: none !important;
+}
+
+/* Input y botón sin animaciones */
+.chat-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transition: opacity 0.05s ease !important;
+}
+
+.chat-input.sending {
+  animation: none !important;
+  position: static !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+
+.chat-input.sending::before {
+  display: none !important;
+}
+
+.chat-send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  transition: opacity 0.05s ease !important;
+}
+
+.chat-send-btn:not(:disabled) {
+  animation: none !important;
+}
+
+/* Eliminar clases de envío que causan lag */
+.chat-window.sending-message {
+  position: static !important;
+}
+
+.chat-window.sending-message::before {
+  display: none !important;
+}
+
+/* Optimizar scroll - sin animaciones */
+.chat-messages {
+  scroll-behavior: auto !important;
+}
+
+/* Forzar aceleración por hardware solo donde es crítico */
+.chat-window {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: auto;
+  contain: layout style paint;
+}
+
+.message {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: auto;
+}
+
+/* Performance: Eliminar todas las transiciones de hover */
+.chat-window *:hover {
+  transition: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Optimización EXTREMA para eliminar lag al escribir */
+.chat-input {
+  /* Eliminar cualquier procesamiento costoso durante typing */
+  will-change: auto !important;
+  backface-visibility: hidden !important;
+  transform: translateZ(0) !important;
+
+  /* Desactivar completamente efectos que puedan causar lag */
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+
+  /* Usar el motor de texto más eficiente */
+  font-smooth: never !important;
+  -webkit-font-smoothing: auto !important;
+  -moz-osx-font-smoothing: auto !important;
+
+  /* Eliminar cualquier delay en la respuesta */
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Optimizar el textarea específicamente durante la escritura */
+.chat-input:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Eliminar lag en cambios de estado */
+.chat-input:disabled {
+  transition: opacity 0.05s ease !important;
+  animation: none !important;
+}
+
+/* Performance crítica: Eliminar cualquier evento de hover/focus costoso */
+.chat-input-wrapper * {
+  pointer-events: auto !important;
+  will-change: auto !important;
+  transform: none !important;
+}
+
+/* Optimizar botón de envío */
+.chat-send-btn {
+  will-change: auto !important;
+  backface-visibility: hidden !important;
+  transform: translateZ(0) !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+.chat-send-btn:hover,
+.chat-send-btn:focus,
+.chat-send-btn:active {
+  transition: none !important;
+  animation: none !important;
+  transform: translateZ(0) !important;
+}

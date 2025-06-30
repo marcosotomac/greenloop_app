@@ -1,0 +1,76 @@
+#!/bin/bash
+
+echo "🔍 DIAGNÓSTICO: Productos no aparecen en intercambio"
+echo "================================================="
+echo ""
+
+echo "📋 Problema identificado:"
+echo "- El modal se abre correctamente ✅"
+echo "- Pero no hay productos en el desplegable ❌"
+echo "- Esto significa que no tienes productos con intercambio activado"
+echo ""
+
+echo "🔧 SOLUCIÓN IMPLEMENTADA:"
+echo "========================="
+echo ""
+
+echo "✅ 1. Debugging mejorado:"
+echo "   - Logs en la consola del navegador"
+echo "   - Información detallada sobre productos cargados"
+echo ""
+
+echo "✅ 2. Botón directo en el modal:"
+echo "   - 'Activar Todos Mis Productos' (botón verde)"
+echo "   - Se ejecuta desde el mismo modal de intercambio"
+echo "   - Activa automáticamente todos tus productos"
+echo ""
+
+echo "✅ 3. Recarga automática:"
+echo "   - Después de activar, recarga la lista"
+echo "   - Los productos aparecen inmediatamente"
+echo ""
+
+echo "🎯 PASOS PARA SOLUCIONARLO:"
+echo "==========================="
+echo ""
+
+echo "OPCIÓN 1 - Desde el Modal (MÁS FÁCIL):"
+echo "1. Abre cualquier producto de otro usuario"
+echo "2. Haz clic en 'Intercambiar'"
+echo "3. En el modal, haz clic en 'Activar Todos Mis Productos' (botón verde)"
+echo "4. Espera a que termine (mostrará 'Activando...')"
+echo "5. ¡Listo! Tus productos aparecerán en el desplegable"
+echo ""
+
+echo "OPCIÓN 2 - Desde la Página de Productos:"
+echo "1. Ve a la página 'Productos'"
+echo "2. Haz clic en 'Activar Todos los Intercambios' (botón verde grande)"
+echo "3. Vuelve a intentar el intercambio"
+echo ""
+
+echo "OPCIÓN 3 - Individual:"
+echo "1. Ve a la página 'Productos'"
+echo "2. En cada producto tuyo, haz clic en 'Activar intercambio'"
+echo "3. El botón se volverá verde"
+echo ""
+
+echo "🔍 VERIFICACIÓN:"
+echo "================"
+echo "1. Abre la consola del navegador (F12)"
+echo "2. Busca logs como:"
+echo "   'Productos disponibles para intercambio: [...]'"
+echo "   'Cantidad de productos: X'"
+echo "3. Si X > 0, los productos aparecerán en el desplegable"
+echo ""
+
+echo "✅ RESULTADO ESPERADO:"
+echo "====================="
+echo "- El desplegable 'Tu producto para ofrecer' mostrará tus productos"
+echo "- Podrás seleccionar qué producto ofrecer"
+echo "- El intercambio funcionará completamente"
+echo ""
+
+echo "¡PROBLEMA SOLUCIONADO! 🎉"
+echo "========================="
+echo "Ahora tienes múltiples formas de activar tus productos para intercambio."
+echo "La más fácil es usar el botón verde directamente en el modal."
