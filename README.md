@@ -1,6 +1,27 @@
 # GREEN LOOP 🤝
 
-This repository contains the source code for the backend of the project, developed with Java and Spring Boot 🌱. 
+This repository contains the source code for the backend of the project, developed with Java and Spring Boot 🌱.
+
+## 🔐 Environment Setup
+
+### Required Environment Variables
+
+Before running the application, you need to set up the following environment variables:
+
+```bash
+# GitHub Models API Key for AI functionality
+export GITHUB_MODELS_API_KEY=your-github-models-api-key-here
+```
+
+### Setting up GitHub Models API Key
+
+1. Go to [GitHub Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens)
+2. Generate a new token with appropriate permissions
+3. Set the environment variable before running the application
+
+### Configuration Files
+
+The application uses placeholder values in `src/main/resources/application.properties`. Make sure to set the actual values via environment variables.
 
 Project Members
 
