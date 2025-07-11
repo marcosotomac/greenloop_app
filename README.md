@@ -31,6 +31,7 @@ Project Members
 | Diego Alarcón    | Diegoalarcon03   | diego.alarcon.b@utec.edu.pe   |
 | André Valle   |  AE00NN   | henrry.valle@utec.edu.pe   |
 | Benjamin Suarez    | BFishyUt3c   | benjamin.suarez@utec.edu.pe  |
+| Sebastian Vilcas   | Sebas-cmd26   | sebastian.vilcas@utec.edu.pe  |
 
 
 ## Prerequisites 🔧
