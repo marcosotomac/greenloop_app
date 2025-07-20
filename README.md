@@ -29,8 +29,6 @@ Project Members
 |----------|----------|----------|
 | Marco Soto   | Marco Soto Maceda   | marco.soto.m@utec.edu.pe   |
 | Diego Alarcón    | Diegoalarcon03   | diego.alarcon.b@utec.edu.pe   |
-| André Valle   |  AE00NN   | henrry.valle@utec.edu.pe   |
-| Benjamin Suarez    | BFishyUt3c   | benjamin.suarez@utec.edu.pe  |
 
 
 ## Prerequisites 🔧
