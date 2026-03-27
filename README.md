@@ -31,7 +31,7 @@ Project Members
 | Diego Alarcón    | Diegoalarcon03   | diego.alarcon.b@utec.edu.pe   |
 
 
-## Prerequisites 🔧
+## Prerequisites 
 Before setting up the project, ensure you have the following installed on your machine:
 
 + Java: Recommended version 17 or higher
