@@ -1,8 +1,8 @@
-# GREEN LOOP 🤝
+# GREEN LOOP 
 
 This repository contains the source code for the backend of the project, developed with Java and Spring Boot 🌱.
 
-## 🔐 Environment Setup
+## Environment Setup
 
 ### Required Environment Variables
 
@@ -40,7 +40,7 @@ Before setting up the project, ensure you have the following installed on your m
 + IntelliJ IDEA: Latest version
 
 
-## Getting Started 🚀
+## Getting Started 
 
 To set up the project on your local machine, follow these steps:
 
@@ -97,9 +97,9 @@ Following these steps will set up the Mure project on your local machine, allowi
 
 ![image](https://github.com/user-attachments/assets/b0fe1ac3-8ff6-4ae8-9728-a8add01fdb88)
 
-## Endpoints  🛣️
+## Endpoints  
 
-Auth 🔐
+Auth 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   |  /auth/singup  | Register a new user and send a welcome email.   |
@@ -116,12 +116,12 @@ Chat 🗫
 | GET    | /api/chats/product/{productId}  | Retrieve all chats related to a specific product by its ID.   |
 | POST    | /api/chats/{chatId}/messages   | Send a message in a specific chat by its ID.   |
 
-Chatbot 🤖
+Chatbot 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   |  /AI/prompt  | Generate a response based on the given prompt.   |
 
-Community 🌐 
+Community 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   |  /api/communities  | Create a new community.   |
@@ -131,7 +131,7 @@ Community 🌐
 | POST    | /api/communities/{id}/leave   | Leave a specific community by its ID.   |
 | GET    | /api/communities/user  | Retrieve all communities the authenticated user is a member of.   |
 
-Donation 🤝
+Donation 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   |  /api/donations | Create a new donation.   |
@@ -141,7 +141,7 @@ Donation 🤝
 | POST    | /api/donations/{id}/request   | Request a specific donation by its ID.   |
 | PUT    | /api/donations/{id}   | Update the status of a specific donation by its ID.   |
 
-Exchange 🔁
+Exchange 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   |  /api/exchanges | Create a new exchange request.   |
@@ -152,7 +152,7 @@ Exchange 🔁
 | GET    | /api/exchanges/requested | Retrieve all exchange requests made by the authenticated user.  |
 | GET    | /api/exchanges/provided   | Retrieve all exchange requests received by the authenticated user.  |
 
-Message 💬
+Message 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   |  /messages/send | Send a message from one user to another.   |
@@ -161,7 +161,7 @@ Message 💬
 | GET    | /messages/receiver |Retrieve all messages received by a specific user.   |
 | GET    | /messages/user | Retrieve all messages associated with a specific user (sent or received).   |
 
-Notification 🔁
+Notification 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   |  /api/notifications | Create a new notification (admin only).  |
@@ -175,14 +175,14 @@ Notification 🔁
 | DELETE    | /api/notifications/{id} |Delete a specific notification by its ID.   |
 | DELETE    | /api/notifications | Delete all notifications for the authenticated user.   |
 
-Post ✉️
+Post 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | GET    | /post/all   | Retrieve all recent posts.  |
 | GET    | /post/{userId} | Retrieve all posts created by a specific user by their ID.   |
 | POST    | /post/create   | Create a new post. |
 
-Product 📦 
+Product 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   | /product | Create a new product.   |
@@ -196,7 +196,7 @@ Product 📦
 | PUT    | /product/{id}/exchange-status | Update the exchange status of a specific product by its ID.  |
 | GET    | /product/{id}/exchange-matches | Find exchange matches for a specific product by its ID.  |
 
-Report 📄
+Report 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | GET    | /reports   | Retrieve all reports.  |
@@ -206,12 +206,12 @@ Report 📄
 | DELETE    | /reports/{id} |  Delete a specific report by its ID.   |
 
 
-User 👤
+User 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | GET    | /user/{id}/communities   | Retrieve all communities associated with a user.  |
 
-Wishlist  📝
+Wishlist  
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   | /api/wishlists | Create a new wishlist.   |
