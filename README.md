@@ -107,7 +107,7 @@ Auth
 | GET    | /auth/me   | Retrieve the current authenticated user's details.   |
 
 
-Chat 🗫
+Chat 
 | Method | Endpoint | Description |
 |----------|----------|----------|
 | POST   |  /api/chats/start  | Start a new chat between two users for a specific product.   |
